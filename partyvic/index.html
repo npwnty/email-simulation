@@ -3,33 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Party 1 - Email Simulation</title>
+    <title>Party 2 - SMS Simulation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        #messages {
+            border: 1px solid #ccc;
+            padding: 10px;
+            height: 200px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Party 1</h1>
-    <input type="text" id="recipient" placeholder="Recipient (e.g., Party 2)">
-    <textarea id="message" placeholder="Write your message..."></textarea>
-    <button id="sendButton">Send Email</button>
-
-    <h2>Sent Messages:</h2>
-    <div id="sentMessages"></div>
+    <h1>partyvic</h1>
+    <div id="messages"></div>
+    <input type="text" id="messageInput" placeholder="Write your message..." />
+    <button id="sendButton">Send</button>
 
     <script>
         const sendButton = document.getElementById('sendButton');
-        const recipientInput = document.getElementById('recipient');
-        const messageInput = document.getElementById('message');
-        const sentMessagesDiv = document.getElementById('sentMessages');
+        const messageInput = document.getElementById('messageInput');
+        const messagesDiv = document.getElementById('messages');
+
+        // Load messages from local storage
+        function loadMessages() {
+            const messages = JSON.parse(localStorage.getItem('messages')) || [];
+            messagesDiv.innerHTML = messages.map(msg => `<p>${msg}</p>`).join('');
+        }
 
         sendButton.addEventListener('click', () => {
-            const recipient = recipientInput.value;
             const message = messageInput.value;
-            if (recipient && message) {
-                const messageElement = document.createElement('p');
-                messageElement.textContent = `To: ${recipient} - Message: ${message}`;
-                sentMessagesDiv.appendChild(messageElement);
-                messageInput.value = ''; // Clear the message input
+            if (message) {
+                const messages = JSON.parse(localStorage.getItem('messages')) || [];
+                messages.push(`Party 2: ${message}`);
+                localStorage.setItem('messages', JSON.stringify(messages));
+                loadMessages();
+                messageInput.value = ''; // Clear input
             }
         });
+
+        // Load messages when the page is loaded
+        loadMessages();
     </script>
 </body>
 </html>
