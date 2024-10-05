@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Party 1 - Email Simulation</title>
+</head>
+<body>
+    <h1>Party 1</h1>
+    <input type="text" id="recipient" placeholder="Recipient (e.g., Party 2)">
+    <textarea id="message" placeholder="Write your message..."></textarea>
+    <button id="sendButton">Send Email</button>
+
+    <h2>Sent Messages:</h2>
+    <div id="sentMessages"></div>
+
+    <script>
+        const sendButton = document.getElementById('sendButton');
+        const recipientInput = document.getElementById('recipient');
+        const messageInput = document.getElementById('message');
+        const sentMessagesDiv = document.getElementById('sentMessages');
+
+        sendButton.addEventListener('click', () => {
+            const recipient = recipientInput.value;
+            const message = messageInput.value;
+            if (recipient && message) {
+                const messageElement = document.createElement('p');
+                messageElement.textContent = `To: ${recipient} - Message: ${message}`;
+                sentMessagesDiv.appendChild(messageElement);
+                messageInput.value = ''; // Clear the message input
+            }
+        });
+    </script>
+</body>
+</html>

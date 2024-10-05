@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Party 2 - Email Simulation</title>
+</head>
+<body>
+    <h1>Party 2</h1>
+    <h2>Received Messages:</h2>
+    <div id="receivedMessages"></div>
+
+    <script>
+        // Simulate receiving a message from Party 1
+        function receiveMessage() {
+            const receivedMessagesDiv = document.getElementById('receivedMessages');
+            const newMessage = document.createElement('p');
+            newMessage.textContent = 'From: Party 1 - Message: Hello from Party 1!';
+            receivedMessagesDiv.appendChild(newMessage);
+        }
+
+        // Simulate receiving a message after a delay
+        setTimeout(receiveMessage, 3000); // Simulate a message received after 3 seconds
+    </script>
+</body>
+</html>
