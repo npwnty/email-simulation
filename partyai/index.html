@@ -20,20 +20,18 @@
         const messageInput = document.getElementById('messageInput');
         const messagesDiv = document.getElementById('messages');
 
-        function loadMessages() {
+        function loadMessages(messages) {
             messagesDiv.innerHTML = messages.map(msg => `<p>${msg}</p>`).join('');
         }
 
         sendButton.addEventListener('click', async () => {
             const message = messageInput.value;
             if (message) {
-                const messages = JSON.parse(localStorage.getItem('messages')) || [];
-                messages.push(`Party 2: ${message}`);
-                localStorage.setItem('messages', JSON.stringify(messages));
-                loadMessages();
-                messageInput.value = ''; // Clear input
+                // Append the human's message to the chat
+                const messages = [`Party 2: ${message}`];
+                loadMessages(messages);
+                messageInput.value = '';
 
-                // Send the message to the Flask server
                 const response = await fetch('http://127.0.0.1:5000/send_message', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -43,14 +41,14 @@
                 const data = await response.json();
                 if (response.ok) {
                     messages.push(`AI (Party 1): ${data.response}`);
-                    localStorage.setItem('messages', JSON.stringify(messages));
-                    loadMessages();
+                    loadMessages(messages);
                 } else {
                     console.error(data.error);
                 }
             }
         });
-        loadMessages();
+
+        loadMessages([]);
     </script>
 </body>
 </html>
