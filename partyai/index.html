@@ -21,7 +21,6 @@
         const messagesDiv = document.getElementById('messages');
 
         function loadMessages() {
-            const messages = JSON.parse(localStorage.getItem('messages')) || [];
             messagesDiv.innerHTML = messages.map(msg => `<p>${msg}</p>`).join('');
         }
 
