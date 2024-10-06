@@ -20,17 +20,36 @@
         const messageInput = document.getElementById('messageInput');
         const messagesDiv = document.getElementById('messages');
 
-        function loadMessages(messages) {
+        function loadMessages() {
+            const messages = JSON.parse(localStorage.getItem('messages')) || [];
             messagesDiv.innerHTML = messages.map(msg => `<p>${msg}</p>`).join('');
         }
+
+        window.onload = async function() {
+            const response = await fetch('http://127.0.0.1:5000/send_message', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: null, role: 'Party 2' })  // No message, so AI starts
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                const messages = [`AI (Party 1): ${data.response}`];
+                localStorage.setItem('messages', JSON.stringify(messages));
+                loadMessages();
+            } else {
+                console.error(data.error);
+            }
+        };
 
         sendButton.addEventListener('click', async () => {
             const message = messageInput.value;
             if (message) {
-                // Append the human's message to the chat
-                const messages = [`Party 2: ${message}`];
-                loadMessages(messages);
-                messageInput.value = '';
+                const messages = JSON.parse(localStorage.getItem('messages')) || [];
+                messages.push(`Party 2: ${message}`);
+                localStorage.setItem('messages', JSON.stringify(messages));
+                loadMessages();
+                messageInput.value = ''; // Clear input
 
                 const response = await fetch('http://127.0.0.1:5000/send_message', {
                     method: 'POST',
@@ -41,14 +60,15 @@
                 const data = await response.json();
                 if (response.ok) {
                     messages.push(`AI (Party 1): ${data.response}`);
-                    loadMessages(messages);
+                    localStorage.setItem('messages', JSON.stringify(messages));
+                    loadMessages();
                 } else {
                     console.error(data.error);
                 }
             }
         });
 
-        loadMessages([]);
+        loadMessages();
     </script>
 </body>
 </html>
